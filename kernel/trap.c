@@ -149,13 +149,16 @@ kerneltrap()
 
   
   if((which_dev = devintr()) == 0){
+    //struct proc* p;
+    //p = myproc();
+    //vmprint(p->kpagetable);
     printf("scause %p\n", scause);
     printf("sepc=%p stval=%p\n", r_sepc(), r_stval());
     printf("for debugging\n"); //lab3 : for debugging 
     //p = myproc();
     
     printf("_____the kernel pagetable_____\n");
-    //vmprint(p->kpagetable);
+    
   
     panic("kerneltrap");
   }
