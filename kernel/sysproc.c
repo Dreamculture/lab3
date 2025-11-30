@@ -49,6 +49,9 @@ sys_sbrk(void)
   addr = myproc()->sz;
   if(growproc(n) < 0)
     return -1;
+  //lab3
+  struct proc* p = myproc();
+  copyin_new(p->pagetable , p->kpagetable , 0 ,0);
   return addr;
 }
 

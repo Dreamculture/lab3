@@ -278,6 +278,9 @@ userinit(void)
   uvminit(p->pagetable, initcode, sizeof(initcode));
   p->sz = PGSIZE;
 
+  //lab3 
+  copyin_new(p->pagetable , p->kpagetable , 0 ,0);
+
   // prepare for the very first "return" from kernel to user.
   p->trapframe->epc = 0;      // user program counter
   p->trapframe->sp = PGSIZE;  // user stack pointer
@@ -330,6 +333,10 @@ fork(void)
     release(&np->lock);
     return -1;
   }
+
+  //lab3 
+  copyin_new(p->pagetable , np->kpagetable , 0 ,0)  ;
+
   np->sz = p->sz;
 
   // copy saved user registers.

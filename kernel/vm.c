@@ -114,9 +114,10 @@ kvminithart()
 pte_t *
 walk(pagetable_t pagetable, uint64 va, int alloc)
 {
-  if(va >= MAXVA)
+  if(va >= MAXVA){
+    printf("the va is %p",va);
     panic("walk");
-
+}
   for(int level = 2; level > 0; level--) {
     pte_t *pte = &pagetable[PX(level, va)];
     if(*pte & PTE_V) {
@@ -188,8 +189,8 @@ mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
       //printf("something bad in walk\n");
       return -1;
     }
-    if(*pte & PTE_V)
-      panic("mappages: remap");
+    //if(*pte & PTE_V)
+      //panic("mappages: remap");
     *pte = PA2PTE(pa) | perm | PTE_V;
     if(a == last)
       break;
