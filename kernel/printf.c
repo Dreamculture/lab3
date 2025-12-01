@@ -132,3 +132,28 @@ printfinit(void)
   initlock(&pr.lock, "pr");
   pr.locking = 1;
 }
+
+//lab4
+void
+backtrace(void)
+{
+  printf("backtrace:\n");
+  uint64 fp = r_fp();
+  //uint64 startpoint = PGROUNDDOWN(fp);
+  /*
+  uint64 bar = myproc()->kstack;
+  uint64 endpoint = bar + PGSIZE;
+  while( endpoint > bar){
+    */
+  uint64 low = myproc()->kstack;
+  uint64 high = low +  PGSIZE ;
+
+  while(fp >= low +16 && fp < high ){
+    uint64 ra = *(uint64*)(fp - 8);  // read memory at (fp - 8)
+
+    //uint64 ra = (uint64*) (fp - 8) ;
+    printf("%p\n", ra);
+    fp = *(uint64*) (fp - 16 );
+    //pfp = PGROUNDDOWN(fp);
+  }
+}
