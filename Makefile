@@ -32,6 +32,7 @@ OBJS = \
   $K/plic.o \
   $K/virtio_disk.o \
   $K/vmcopyin.o \
+  
 
 OBJS_KCSAN = \
   $K/start.o \
@@ -195,6 +196,7 @@ UPROGS=\
 	$U/_wc\
 	$U/_zombie\
 	$U/_bttest\
+	$U/_alarmtest\
 
 
 

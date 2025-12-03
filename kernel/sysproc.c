@@ -99,3 +99,30 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+//lab4 
+uint64
+sys_sigalarm(void)
+{
+  int n ;
+  uint64 addr;
+  if(argint(0,&n) < 0)  //store the alarm interval n
+    return -1;
+  if(argaddr(1,&addr) < 0)  //store the address of the handler function
+    return -1;
+  struct proc* p;
+  p = myproc();
+  p->alintv = n;
+  p->timeleft = n;
+  p->alhandler = addr;  
+  printf("for test: %dcall the system alarm%p\n",p->alintv,p->alhandler);
+  return 0;
+}
+
+//lab4
+uint64
+sys_sigreturn(void)
+{
+    printf("for test: return the alarm\n");
+  return 0;
+}

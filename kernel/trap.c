@@ -77,9 +77,27 @@ usertrap(void)
     exit(-1);
 
   // give up the CPU if this is a timer interrupt.
-  if(which_dev == 2)
-    yield();
+  if(which_dev == 2){
+  //lab4
+    if(p->alintv > 0 ){
+      if(p->in_handler == 0){
+        p->timeleft--;
+        if(p->timeleft == 0){          
+          p->in_handler = 1;
+          printf(" test : go to the timeleft point from user\n");
+          memmove(&p->alarm_trapframe , p->trapframe , sizeof(p->trapframe));
+          //handler();
+          //uint64 epc = p->trapframe->epc;
+          p->trapframe->epc = (uint64)p->alhandler;
 
+        }
+
+    }
+    }
+
+    
+    yield();
+  }
   usertrapret();
 }
 
@@ -163,9 +181,23 @@ kerneltrap()
     panic("kerneltrap");
   }
 
+  //lab4
+  struct proc* p = myproc();
   // give up the CPU if this is a timer interrupt.
-  if(which_dev == 2 && myproc() != 0 && myproc()->state == RUNNING)
+  if(which_dev == 2 && myproc() != 0 && myproc()->state == RUNNING){
+    if(p->alintv > 0 ){
+      if(p->alhandler == 0){
+        p->timeleft--;
+        if(p->timeleft == 0){
+          p->alhandler = 1;
+          printf(" test : go to the timeleft point from kernel\n");
+        }
+    }
+    }
+
     yield();
+  }
+    
 
   // the yield() may have caused some traps to occur,
   // so restore trap registers for use by kernelvec.S's sepc instruction.
@@ -232,3 +264,10 @@ devintr()
   }
 }
 
+//lab4
+void
+handler(void)
+{
+  struct proc* p = myproc();
+  printf("in handler , the left is %d\n",p->timeleft);
+}

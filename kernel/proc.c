@@ -166,6 +166,12 @@ found:
     return 0;
   }
 
+  //lab4
+  p->in_handler = 0;
+  p->alintv = 0;
+  p->timeleft = 0;
+  p->alhandler = 0;  
+
   // Set up new context to start executing at forkret,
   // which returns to user space.
   memset(&p->context, 0, sizeof(p->context));
@@ -497,7 +503,7 @@ scheduler(void)
 
     for(p = proc; p < &proc[NPROC]; p++) {
       acquire(&p->lock);
-      if(p->state == RUNNABLE) {
+       if(p->state == RUNNABLE) {
         // Switch to chosen process.  It is the process's job
         // to release its lock and then reacquire it
         // before jumping back to us.
